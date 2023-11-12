@@ -1,0 +1,18 @@
+# Add the below host entried in your laptop/desktop host file
+# 127.0.0.1 hello.vinod.com
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello
+spec:
+  rules:
+    - host: hello.vinod.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: hello
+                port:
+                  number: 80

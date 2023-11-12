@@ -1,0 +1,24 @@
+# Pre-req: Intall kind executable
+# The below spec will create a 1 controlplane with 2 node cluster and expose port 80,443 in your localhost (In your laptop/Desktop). The actual traffic is to the control plane. This will be useful to test k8s ingress.
+# kind create cluster --config .\kind-config-IngressExpose.yaml
+# Ref: https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx , https://dustinspecker.com/posts/test-ingress-in-kind/
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: k8s
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+- role: worker
+- role: worker

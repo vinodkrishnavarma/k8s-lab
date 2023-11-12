@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: sampleweb
+  name: sampleweb-portexpose
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30000
+  selector:
+    run: sampleweb
+  type: NodePort
+status:
+  loadBalancer: {}

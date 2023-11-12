@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sampleweb
+  name: sampleweb
+spec:
+  containers:
+  - image: nginxdemos/hello
+    name: sampleweb
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

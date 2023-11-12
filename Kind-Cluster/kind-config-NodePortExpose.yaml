@@ -1,0 +1,17 @@
+# This is Optional, This will do the same thing like kind-config-IngressExpose.yaml. It will expose port 30000
+# Pre-req: Intall kind executable
+# The below spec will create a 1 controlplane with 2 node cluster and expose port 30000 in your localhost (In your laptop/Desktop). The actual traffic is to the control plane.
+# kind create cluster --config .\kind-config-NodePortExpose.yaml
+# Ref: https://dustinspecker.com/posts/test-ingress-in-kind/
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: k8s
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 30000
+    listenAddress: "0.0.0.0"
+    protocol: tcp
+- role: worker
+- role: worker
