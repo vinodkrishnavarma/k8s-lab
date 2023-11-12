@@ -7,6 +7,7 @@ Folder structure:
 3. Sampleapps_using_ingress: Application yamls to expose application pods using ingress.
    
 Options:
-   a) If you want to test ingress, then create kind cluster using yaml config "kind-config-IngressExpose.yaml" and apply install-ingress.yaml inside k8s cluster using kubectl apply. To install the applications use yamls inside the folder "Sampleapps_using_Ingress"
-   b) If you want to test Nodeport, then create kind cluster using yaml config "kind-config-NodePortExpose.yaml" and use the applications yamls inside the folder "Sampleapps_using_nodeport"
+   a) If you want to test ingress, then create kind cluster using yaml config "kind-config-IngressExpose.yaml" and apply install-ingress.yaml inside k8s cluster using kubectl apply. To install the applications use yamls inside the folder "Sampleapps_using_Ingress".
+
+   b) If you want to test Nodeport, then create kind cluster using yaml config "kind-config-NodePortExpose.yaml" and use the applications yamls inside the folder "Sampleapps_using_nodeport".
  
