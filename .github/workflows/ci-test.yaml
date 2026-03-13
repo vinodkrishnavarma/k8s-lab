@@ -18,7 +18,7 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v3
         with:
-          username: vinod
+          username: vinodkv1
           password: pinnacle1%
         continue-on-error: true
 
