@@ -25,5 +25,5 @@ jobs:
 
       - name: Check GitHub API Rate Limit
         run: |
-          curl -sf https://api.github.com
+          curl -sf https://api.github.com/rate_limit
         shell: bash
