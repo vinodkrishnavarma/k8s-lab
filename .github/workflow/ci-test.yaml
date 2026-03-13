@@ -1,10 +1,7 @@
 ---
 name: test-ci
 on:
-  pull_request_target:
-    # paths-ignore:
-    #   - ".github/workflows/workflow-release.yaml"
-    #   - ".github/workflows/diff-ci.yaml"
+  workflow_dispatch: # This enables the "Run workflow" button in the Actions tab
 
 jobs:
   test:
