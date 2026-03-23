@@ -1,0 +1,79 @@
+---
+# Kubernetes CronJob – Action Archive Cache Warmer (iac-arc-runners-acp)
+#
+# Identical to cronjob-iac.yaml but targets the iac-arc-runners-acp namespace
+# and its own action-archive-cache PVC.
+#
+# Apply with:
+#   kubectl apply -f k8s/cronjob-acp.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: action-cache-warmer
+  namespace: iac-arc-runners-acp
+spec:
+  schedule: "30 2 * * 0"      # Every Sunday 02:30 UTC (staggered from iac job)
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: OnFailure
+          nodeSelector:
+            node.kubernetes.io/role: iac-system
+          containers:
+            - name: cache-warmer
+              image: ghcr.io/iac/action-cache-warmer:latest
+              imagePullPolicy: Always
+              env:
+                - name: ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE
+                  value: /home/runner/action-archive-cache
+                - name: ACTIONS_LIST_FILE
+                  value: /warmer/actions-list.txt
+                - name: HTTPS_PROXY
+                  value: http://jumper.aztdexpcicd-prod.ec1.aws.aztec.cloud.allianz:8888
+                - name: HTTP_PROXY
+                  value: http://jumper.aztdexpcicd-prod.ec1.aws.aztec.cloud.allianz:8888
+                - name: https_proxy
+                  value: http://jumper.aztdexpcicd-prod.ec1.aws.aztec.cloud.allianz:8888
+                - name: http_proxy
+                  value: http://jumper.aztdexpcicd-prod.ec1.aws.aztec.cloud.allianz:8888
+                - name: NO_PROXY
+                  value: >-
+                    10.251.0.0/16,44.126.103.128/25,44.126.103.64/26,
+                    10.100.0.0/16,172.20.0.0/16,localhost,127.0.0.1,
+                    .internal,.local,.ec1.aws.aztec.cloud.allianz,
+                    169.254.169.254,.svc,.svc.cluster.local,.cluster.local,
+                    .allianz,github.developer.allianz.io,.platform.cloud.allianz,
+                    .s3.eu-central-1.amazonaws.com,sts.eu-central-1.amazonaws.com
+                - name: no_proxy
+                  value: >-
+                    10.251.0.0/16,44.126.103.128/25,44.126.103.64/26,
+                    10.100.0.0/16,172.20.0.0/16,localhost,127.0.0.1,
+                    .internal,.local,.ec1.aws.aztec.cloud.allianz,
+                    169.254.169.254,.svc,.svc.cluster.local,.cluster.local,
+                    .allianz,github.developer.allianz.io,.platform.cloud.allianz,
+                    .s3.eu-central-1.amazonaws.com,sts.eu-central-1.amazonaws.com
+              resources:
+                requests:
+                  cpu: "500m"
+                  memory: "512Mi"
+                limits:
+                  cpu: "2"
+                  memory: "2Gi"
+              volumeMounts:
+                - name: action-archive-cache
+                  mountPath: /home/runner/action-archive-cache
+                - name: ca-bundle
+                  mountPath: /usr/local/share/ca-certificates/fcp-ca-bundle.crt
+                  subPath: ca-bundle.crt
+          volumes:
+            - name: action-archive-cache
+              persistentVolumeClaim:
+                claimName: action-archive-cache
+            - name: ca-bundle
+              configMap:
+                name: fcp-ca-bundle

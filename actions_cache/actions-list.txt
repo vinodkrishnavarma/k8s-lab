@@ -1,0 +1,20 @@
+# ── GitHub core actions ──────────────────────────────────────────────────────
+actions/checkout
+actions/setup-node
+actions/setup-java
+actions/setup-python
+actions/cache
+actions/upload-artifact
+actions/download-artifact
+actions/github-script
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+docker/login-action
+docker/build-push-action
+docker/metadata-action
+docker/setup-buildx-action
+
+# ── Pull-request tooling ──────────────────────────────────────────────────────
+mshick/add-pr-comment
+
+# ── Add your frequently used actions below ───────────────────────────────────
